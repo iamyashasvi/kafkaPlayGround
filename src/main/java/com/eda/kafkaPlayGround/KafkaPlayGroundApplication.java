@@ -1,4 +1,4 @@
-package com.example.kafkaPlayGround;
+package com.eda.kafkaPlayGround;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
