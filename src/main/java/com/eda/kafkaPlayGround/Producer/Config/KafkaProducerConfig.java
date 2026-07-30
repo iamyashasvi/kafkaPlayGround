@@ -18,6 +18,10 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
+
+    /*
+    This will load at the time of initialization.
+     */
     @Bean
     public NewTopic createOrderEvents(){
         return TopicBuilder.name("order-events")
