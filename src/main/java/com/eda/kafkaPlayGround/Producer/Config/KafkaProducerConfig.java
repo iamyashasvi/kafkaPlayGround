@@ -31,7 +31,6 @@ public class KafkaProducerConfig {
                 .config(TopicConfig.CLEANUP_POLICY_CONFIG, "delete")
                 .config(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, "2")
                 .config(TopicConfig.SEGMENT_BYTES_CONFIG, "1073741824")
-                .config(TopicConfig.COMPRESSION_TYPE_DOC, "snappy")
                 .build();
     }
 
