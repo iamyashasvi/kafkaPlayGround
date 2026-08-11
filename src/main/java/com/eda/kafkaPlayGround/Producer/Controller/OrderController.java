@@ -42,5 +42,11 @@ public class OrderController {
 //        orderProducerService.sendWithKeyForCustomSerializer(order);
 //        return ResponseEntity.accepted().body("order created and published through custom serializer");
 //    }
+
+    @PostMapping("/with-key-ObjectType")
+    public ResponseEntity<String> sendWithKeyObject(@RequestBody Order order){
+        orderProducerService.sendWithKeyObject(order);
+        return ResponseEntity.accepted().body("Order created and published with Object type in header");
+    }
     
 }
