@@ -43,6 +43,13 @@ public class OrderController {
 //        return ResponseEntity.accepted().body("order created and published through custom serializer");
 //    }
 
+    /*
+    curl --location 'http://localhost:8081/api/orders/with-key-ObjectType' \
+         --header 'Content-Type: application/json' \
+        --data '{
+            "orderId": "1"
+        }'
+     */
     @PostMapping("/with-key-ObjectType")
     public ResponseEntity<String> sendWithKeyObject(@RequestBody Order order){
         orderProducerService.sendWithKeyObject(order);
