@@ -37,10 +37,10 @@ public class OrderController {
             "orderId": "1"
         }'
      */
-    @PostMapping("/for-custom-serializer")
-    public ResponseEntity<String> postMethodName(@RequestBody Order order) {
-        orderProducerService.sendWithKeyForCustomSerializer(order);
-        return ResponseEntity.accepted().body("order created and published through custom serializer");
-    }
+//    @PostMapping("/for-custom-serializer")
+//    public ResponseEntity<String> postMethodName(@RequestBody Order order) {
+//        orderProducerService.sendWithKeyForCustomSerializer(order);
+//        return ResponseEntity.accepted().body("order created and published through custom serializer");
+//    }
     
 }

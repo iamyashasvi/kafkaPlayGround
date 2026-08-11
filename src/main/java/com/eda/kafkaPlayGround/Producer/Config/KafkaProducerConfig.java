@@ -35,16 +35,28 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, Order> customSerializer(KafkaProperties kafkaProperties){
-
-        //First load application.properties then load this bean.
-        Map<String, Object> props = new HashMap<>(kafkaProperties.buildProducerProperties());
-
-        // Override only what we have to change.
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, OrderSummarySerializer.class);
-
-        DefaultKafkaProducerFactory<String, Order> factory = new DefaultKafkaProducerFactory<>(props);
-
-        return new KafkaTemplate<>(factory);
+    public NewTopic createPaymentEvents(){
+        return TopicBuilder.name("payment-events")
+                .partitions(4)
+                .replicas(2)
+                .config(TopicConfig.RETENTION_MS_CONFIG, "604800000")
+                .config(TopicConfig.CLEANUP_POLICY_CONFIG, "delete")
+                .config(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, "2")
+                .config(TopicConfig.SEGMENT_BYTES_CONFIG, "1073741824")
+                .build();
     }
+
+//    @Bean
+//    public KafkaTemplate<String, Order> customSerializer(KafkaProperties kafkaProperties){
+//
+//        //First load application.properties then load this bean.
+//        Map<String, Object> props = new HashMap<>(kafkaProperties.buildProducerProperties());
+//
+//        // Override only what we have to change.
+//        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, OrderSummarySerializer.class);
+//
+//        DefaultKafkaProducerFactory<String, Order> factory = new DefaultKafkaProducerFactory<>(props);
+//
+//        return new KafkaTemplate<>(factory);
+//    }
 }
