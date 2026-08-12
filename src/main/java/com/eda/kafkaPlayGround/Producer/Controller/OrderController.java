@@ -24,11 +24,11 @@ public class OrderController {
             "orderId": "1"
         }'
      */
-    @PostMapping("/with-key")
-    public ResponseEntity<String> sendWithKey(@RequestBody Order order){
-        orderProducerService.sendWithKey(order);
-        return ResponseEntity.accepted().body("Order created and published successfully!!");
-    }
+//    @PostMapping("/with-key")
+//    public ResponseEntity<String> sendWithKey(@RequestBody Order order){
+//        orderProducerService.sendWithKey(order);
+//        return ResponseEntity.accepted().body("Order created and published successfully!!");
+//    }
 
     /*
     curl --location 'http://localhost:8081/api/orders/for-custom-serializer' \
@@ -55,5 +55,16 @@ public class OrderController {
         orderProducerService.sendWithKeyObject(order);
         return ResponseEntity.accepted().body("Order created and published with Object type in header");
     }
-    
+    /*
+    curl --location 'http://localhost:8081/api/orders/send-bugee-message' \
+        --header 'Content-Type: application/json' \
+        --data '{
+            "orderId": "1"
+        }'
+     */
+    @PostMapping("/send-bugee-message")
+    public ResponseEntity<String> sendBugeeMessage(@RequestBody Order order){
+        orderProducerService.sendBugeeMessage(order);
+        return ResponseEntity.accepted().body("Order created and published successfully!!");
+    }
 }

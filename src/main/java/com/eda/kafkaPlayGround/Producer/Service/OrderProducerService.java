@@ -14,8 +14,11 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class OrderProducerService {
 
+//    @Autowired
+//    private KafkaTemplate<String, Order> kafkaTemplate;
+
     @Autowired
-    private KafkaTemplate<String, Order> kafkaTemplate;
+    private KafkaTemplate<String, String> kafkaTemplateStringValue;
 
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplateWithObject;
@@ -24,21 +27,21 @@ public class OrderProducerService {
 //    @Qualifier("customSerializer")
 //    private KafkaTemplate<String, Order> customSerializerKafkaTemplate;
 
-    public void sendWithKey(Order order){
-        String key = order.getOrderId();
-
-        CompletableFuture<SendResult<String, Order>> future = kafkaTemplate.send("order-events", key, order);
-
-        future.whenComplete((result, ex) -> {
-           if(ex == null) {
-               System.out.println("Order event created successfully");
-               System.out.println("Partition:: " + result.getRecordMetadata().partition());
-               System.out.println("Offset:: " + result.getRecordMetadata().offset());
-           } else{
-               System.out.println("Failed to create kafka topic :: " + ex.getMessage());
-           }
-        });
-    }
+//    public void sendWithKey(Order order){
+//        String key = order.getOrderId();
+//
+//        CompletableFuture<SendResult<String, Order>> future = kafkaTemplate.send("order-events", key, order);
+//
+//        future.whenComplete((result, ex) -> {
+//           if(ex == null) {
+//               System.out.println("Order event created successfully");
+//               System.out.println("Partition:: " + result.getRecordMetadata().partition());
+//               System.out.println("Offset:: " + result.getRecordMetadata().offset());
+//           } else{
+//               System.out.println("Failed to create kafka topic :: " + ex.getMessage());
+//           }
+//        });
+//    }
 
 //    public void sendWithKeyForCustomSerializer(Order order){
 //        String key = order.getOrderId();
@@ -68,6 +71,22 @@ public class OrderProducerService {
            } else{
                System.out.println("Failed to create kafka topic :: " + ex.getMessage());
            }
+        });
+    }
+
+    public void sendBugeeMessage(Order order){
+        String key = order.getOrderId();
+
+        CompletableFuture<SendResult<String, String>> future = kafkaTemplateStringValue.send("order-events", key, "This is string not a JSON");
+
+        future.whenComplete((result, ex) -> {
+            if(ex == null) {
+                System.out.println("Order event created successfully");
+                System.out.println("Partition:: " + result.getRecordMetadata().partition());
+                System.out.println("Offset:: " + result.getRecordMetadata().offset());
+            } else{
+                System.out.println("Failed to create kafka topic :: " + ex.getMessage());
+            }
         });
     }
 
