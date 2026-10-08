@@ -2,6 +2,7 @@ package com.eda.kafkaPlayGround.Producer.Service;
 
 
 import com.eda.kafkaPlayGround.Producer.Model.Order;
+import com.eda.kafkaPlayGround.Producer.Model.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
@@ -88,6 +89,41 @@ public class OrderProducerService {
                 System.out.println("Failed to create kafka topic :: " + ex.getMessage());
             }
         });
+    }
+
+    public String sendTransactionCommit(Order order, Payment payment){
+        return kafkaTemplateWithObject.executeInTransaction(ops -> {
+            //Send 1 event.
+            SendResult<String, Object> orderResult = ops.send("order-events", order.getOrderId(), order).join();
+            System.out.println("Order written in partition " +
+                    orderResult.getRecordMetadata().partition() +
+                    ", offset " + orderResult.getRecordMetadata().offset());
+
+
+            //Send 2 event.
+            SendResult<String, Object> paymentResult = ops.send("payment-events", payment.getPaymentId(), payment).join();
+            System.out.println("Payment written in partition " +
+                    paymentResult.getRecordMetadata().partition() +
+                    ",offset " + paymentResult.getRecordMetadata().offset());
+
+
+            return "COMMITTED";
+        });
+    }
+
+    public String sendTransactionAbort(Order order){
+        try {
+            return kafkaTemplateWithObject.executeInTransaction(ops -> {
+                SendResult<String, Object> orderResult = ops.send("order-events", order.getOrderId()).join();
+                System.out.println("Order written in partition " +
+                        orderResult.getRecordMetadata().partition() +
+                        ", offset " + orderResult.getRecordMetadata().offset());
+                throw new RuntimeException("Failure, : Transaction was aborted");
+            });
+        }
+       catch(Exception e){
+            return "ABORTED" + e.getMessage();
+       }
     }
 
 }

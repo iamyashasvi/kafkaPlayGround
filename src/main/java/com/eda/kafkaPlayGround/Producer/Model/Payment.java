@@ -12,6 +12,13 @@ public class Payment {
         this.countryCode = countryCode;
     }
 
+    public Payment(String paymentId, String customerId, Double totalAmount, String status){
+        this.paymentId = paymentId;
+        this.customerId = customerId;
+        this.totalAmount = totalAmount;
+        this.status = status;
+    }
+
     private String paymentId;
     private String customerId;
     private String productId;
